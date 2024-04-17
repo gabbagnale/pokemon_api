@@ -7,6 +7,18 @@ This Project uses these public APIs:
 https://funtranslations.com/api/shakespeare
 https://pokeapi.co/api/v2
 
+## Docs
+Once the application is running in local, swagger ui will be available at
+```url
+localhost:8080/pokemon-api-swagger.html
+```
+
+While the doc in open-api at
+```url
+http://localhost:8080/pokemon-api-docs
+```
+
+
 ## Endpoints
 
 - [GET] /pokemon/{name}
@@ -20,26 +32,6 @@ https://pokeapi.co/api/v2
 }
 ```
 
-```plantuml
-skinparam shadowing false
-actor User as u
-participant "Pokedex" as p
-participant "Pokeapi" as api
-u->p++: [GET] /pokemon/{name}
-p->api++: [GET] pokeapi.co/api/v2/pokemon-species/{name}
-api->p--: pokemon
-alt response code is 200 
-    loop text : flavor_text_entries
-        alt text.language = en
-            p->p: description : text.flavor_text
-        end
-    end
-    p->u: name : response.name \ndescription : description \nhabitat: response.habitat.name \nisLegendary : response.is_legendary
-else
-    p->u: ERROR [response code]
-end
-```
-
 - [GET] /pokemon/translated/{name}
 
 ```json
@@ -49,45 +41,6 @@ end
   "habitat": "mountain", 
   "isLegendary": false
 }
-```
-
-```plantuml
-skinparam shadowing false
-actor User as u
-participant "Pokedex" as p
-participant "Pokeapi" as api
-participant "Translation" as t
-
-u->p++: [GET] /pokemon/{name}
-p->api++: [GET] pokeapi.co/api/v2/pokemon-species/{name}
-api->p--: pokemon
-alt response code is 200 
-    loop text : flavor_text_entries
-        alt text.language = en
-            p->p: description : text.flavor_text
-        end
-    end
-    alt response.habitat.name = cave OR response.is_legendary
-       p->t++: [GET] api.funtranslations.com/translate/yoda.json?text=description
-       t->p--: translated_text
-       alt translated_text
-        p->p: description : translated_text
-       else
-         p->p: description : description
-       end
-     else
-       p->t++: [GET] api.funtranslations.com/translate/shakespeare.json?text=description
-       t->p--: translated_text
-       alt translated_text
-        p->p: description : translated_text
-       else
-         p->p: description : description
-       end
-    end
-    p->u: name : response.name \ndescription : description \nhabitat: response.habitat.name \nisLegendary : response.is_legendary
-else
-    p->u: ERROR [response code]
-end
 ```
 
 ### Installation
