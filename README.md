@@ -44,10 +44,10 @@ http://localhost:8080/pokemon-api-docs
 ```
 
 ### Installation
-A simple shell script run.sh is available to build and run the project.
-The script will run the tests and build the image to expose with docker on 8080 port.
+A shell script run.sh is available to build and run the project.
+The script will run the tests, build the image and deploy with docker on 8080 port.
 
-The base url will be then 
+The base url will be 
 ```url
 http://localhost:8080/v1/pokemon
 ```
@@ -67,8 +67,9 @@ https://docs.docker.com/engine/install/
 ```
 
 ### Production improvements
-Some improvements can be done for a production environment.
-In order to avoid too high traffic, a rate limit can be done.
-A cache can be added in order to make response faster.
-
-For CI/CD, test coverage can be added with a pipeline to run tests, upload image on a repository and deploy the image on the requested environment. 
+Some improvements can be done for a production environment:
+- To avoid too high traffic, a rate limit can be done.
+- A cache can be added to make responses faster and to not call every time the external api.
+- Code coverage on unit tests and softwares as Sonarqube to inspect the code
+- Pipeline to run tests, upload image on a repository and deploy the image on the requested environment.
+ 
